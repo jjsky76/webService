@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title><%= title %></title>    
+	<link rel='stylesheet' href='/stylesheets/bootstrap.css' />
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+	<script src="/javascripts/bootstrap.js"></script>
+</head>
+<body>
+	<div class="col-sm-2">
+	</div>
+	
+	<div class="container col-sm-8">
+		<div class="text-center">
+			<br>
+			<a href="/board"><h2>Bulletin Board</h2></a>
+		</div>
+		
+		<div id ="regist" class="text-right">
+			<button class="btn btn-default" onclick="location.href='/board/regist'"> Write </button>
+			<br>
+			<br>
+		</div>
+		
+		<div id="contentsTable">
+			<table style="table-layout:fixed" class="table table-striped">
+				<tr>
+					<th width="10%">No.</th>
+					<th width="40%">Title</th>
+					<th width="15%">Writer</th>
+					<th width="25%">Date</th>
+					<th width="10%">Cnt</th>
+				</tr>
+<%if( contents.length > 0 ) {
+		var i = 0;
+		contents.forEach(function(item) {
+			i++;
+			var fileCnt = '';
+			if( item.fileUp.length != 0 ) fileCnt = "File:"+item.fileUp.length;%>
+				<tr>
+					<td><%=i%></td>
+					<td><a href="/board/article/<%=item._id%>"> <%=item.title%>  [<%=item.comments.length%>]<%=fileCnt%> </a></td>
+					<td><%=item.writer%></td>
+					<td><%=item.date.toLocaleString("ko-KR")%></td>
+					<td><%=item.count%></td>
+				</tr>
+<%	})
+	} else {%>
+				<tr>
+					<td colspan="5">There are No posts !!!</td>
+				</tr>
+<%}%>
+			</table>
+		</div>
+
+		<div id="pagenation" class="text-center">
+<%for(var i=1; i<=pagination; i++) {%>        
+				<ul class="pagination"> 
+					<li><a href="/board?page=<%=i%>"> <%=i%> </a></li>
+				</ul>
+<%}%>
+		</div>
+	</div>
+	
+	<div class="col-sm-2">
+	</div>
+</body>
+</html>

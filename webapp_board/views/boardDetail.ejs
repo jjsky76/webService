@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title><%=title%></title>
+    <link rel='stylesheet' href='/stylesheets/bootstrap.css' />
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+	<script src="/javascripts/bootstrap.js"></script>
+    
+	<style type="text/css">
+	h4 {
+		color:#069;
+	}
+	</style>
+
+    <script>
+        $(function(){
+            var fileUp = '<%=content.fileUp%>';
+            var files = '';
+            var cnt = '';
+            var output = '';
+            if(fileUp != "") {
+                files = fileUp.split(',');
+                cnt = files.length;
+                for (var i = 0; i < cnt; i++) {
+                    output += "<button type='button' onclick=downloadFiles('"+files[i].split(':')[0]+"');>";
+                    output += "<span id='downloadFile'>" + files[i].split(':')[1] + "</span>";
+                    output += "</button>";
+                }
+            } else {
+                output = "파일이 없습니다.";
+            }
+
+            $('.download-file').html(output);
+        });
+
+        function downloadFiles(filepath) {
+            var path = filepath;
+            if(confirm("파일이 다운로드 됩니다.") == true) {
+                location.href = "/boards/download/" + path;
+            }
+        }
+
+        function modifyContents() {
+            // 글 수정 버튼 눌렀을 때 화면 전환 시
+            $('.content_detail').hide();
+            $('.modify_form').show();
+
+            $('.modSubject').val('<%=content.title%>');
+            $('.modWriter').text('<%=content.writer%>');
+            $('.textContents').html('<%=content.contents%>');
+        }
+
+        function checkPW(inputPassword){
+            var result = '';
+
+            $.ajax({
+                url: '/boards/password/?id=<%=content._id%>',
+                async: false,
+                success: function(password) {
+                    if(inputPassword == password) result = true;
+                    else result = false;
+                }
+            });
+            return result;
+        }
+
+        function modifySubmitContents() {
+            // 글 수정후 db 저장 시 비번 확인 후 맞으면 수정으로 submit
+            var title = $('#modContentSubject').val();
+            var content = $('#modContents').val();
+            var inputPassword = $('#modContentPassword').val();
+
+            var chkpw = checkPW(inputPassword);
+
+            if(chkpw == true) {
+                if (title == '' || content == '') {
+                    alert("제목과 내용 모두 있어야합니다.");
+                    return;
+                } else {
+                    $('#modifyAction').submit();
+                }
+            } else {
+                alert("글 작성 시 입력한 비밀 번호를 입력해주세요");
+                return;
+            }
+        }
+
+        function cancelForm(option) {
+            if(option == 'modify') {
+                // 수정하다 취소시
+                $('.content_detail').show();
+                $('.modify_form').hide();
+            } else {
+                $('.delete_confirm').hide();
+            }
+
+        }
+        function deleteContents() {
+            // 글 삭제시 비번 확인 후 맞으면 삭제로 submit
+            $('.delete_confirm').show();
+        }
+
+        function deleteConfirm() {
+            var inputPassword = $('#delPassword').val();
+            var chkpw = checkPW(inputPassword);
+
+            if(chkpw == true) {
+                location.href='/boards/delete?id=<%=content._id%>';
+            } else {
+                alert("글 작성 시 입력한 비밀 번호를 입력해주세요");
+                return;
+            }
+        }
+    </script>
+</head>
+<body>
+	<div class="col-xs-2">
+	</div>
+	
+	<div class="container col-xs-8">
+		<div class="text-center">
+		<br>
+		<a href="/board"><h2>Bulletin Board</h2></a>
+		</div>
+		
+		<div class="contentBox">
+			<div class="addBtngroup text-right" >
+				<button class="btn btn-default"  onclick="modifyContents();"> 수정 </button>
+				<button class="btn btn-default"  onclick="deleteContents();"> 삭제 </button>
+				<br>
+				<br>
+			</div>
+				
+			<div class="contentDetail">
+				<table class="table ">
+					<tr>
+						<th width="30%"> Title </td>
+						<td width="*"> <%=content.title%> </td>
+					</tr>
+					<tr>
+						<th> Date </td>
+						<td> <%=content.date.toLocaleString("ko-KR")%> </td>
+					</tr>
+					<tr>
+						<th> Author </td>
+						<td> <%=content.writer%> </td>
+					</tr>
+					<tr>
+						<th> Description </td>
+						<td height="250px"> <%=content.contents%> </td>
+					</tr>
+					<tr>
+						<th> Download File </td>
+						<td>  </td>
+					</tr>
+				</table>							
+			</div>
+			
+			<div id="reply">
+				<h4> Reply [ <%=content.comments.length%> ] </h4>
+			
+				<table id="replyList" class="table table-striped">
+<%if( content.comments.length > 0 ) {
+		var commentsList = content.comments;
+		for( var i=0; i < commentsList.length; i++ ) {%>
+					<tr id="replyInfo">
+						<td width="*"> <%=commentsList[i].name%> </td>
+						<td width="20%"> <%=commentsList[i].date.toLocaleString("ko-KR")%> </td>
+					</tr>
+					<tr id="replyText"> 
+						<td colspan="2"> <%=commentsList[i].memo%> </td>
+					</tr>
+<%	}
+	} else {%>
+					<tr> 
+						<td colspan="2"> There is no reply !!! </td>
+					</tr>					
+<%}%>
+			   </table>
+			</div>
+			
+			<div id="replyForm" class="form-vertical">			
+				<h4> Write Reply </h4>
+				<form id="replyAction" action="/boards/reply" method="post">
+					<div class="form-group">
+						<label for="replyWriter"> 1. Writer : </label>
+						<input type="text" class="form-control" id="replyWriter" name="replyWriter" placeholder="Reply Writer">
+					</div>
+					<div class="form-group">
+						<label for="replyComment"> 2. Comment : </label>
+						<textarea class="form-control" id="replyComment" name="replyComment" rows="3" cols="80" placeholder="Comment"></textarea>
+					</div>
+					<div class="text-right">
+						<input type="hidden" name="replyId" id="replyId" value="<%=content._id%>">
+						<button type="submit" class="btn btn-default">Post</button>
+						<br>
+						<br>
+					</div>
+				</form>
+			</div>
+		</div>		
+	</div>
+	
+	<div class="col-xs-2">
+	</div>
+</body>
+</html>

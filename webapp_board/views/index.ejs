@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+        <meta name="viewport", content="width=device-width">
+		<link rel='stylesheet' href='/stylesheets/style.css' />
+	</head>
+	<body>
+		<div class="nav_container">
+			<div class="side_nav">
+				<p></p>
+			</div>
+			<div class="nav_content">
+				<h1>TODO</h1>
+				<form action="/task-register" method="post">
+					<div>
+						<table>
+							<tr>
+								<td>Date</td>
+								<td>
+									<input type="date" name="date">
+								</td>
+							</tr>
+							<tr>
+								<td>ToDo</td>
+								<td width="100%">
+									<textarea name="task" rows="3">To-Do</textarea>
+								</td>
+							</tr>
+							<tr>
+								<td></td>
+								<td>
+									<button type="submit"> Submit </button>
+								</td>
+							</tr>
+						</table>
+					</div>
+					
+				</form>
+				<h3>TODO LIST</h3>
+				<form action="/task-done" method="post">
+					<div>
+						<label>
+							<% if(todo!=(null&&"")){
+							   todo.forEach(function(todo){ %>
+							   <input type="checkbox" name="checked" value="<%=todo._id%>"> 
+								  <%= todo.task %> / until <%= todo.date %> / finish <%=todo.done%><br>
+							<% });
+							} else { %>
+							   <p>등록된 일정이 없습니다</p>
+							<%}%>
+						</label>
+					</div>			
+					<button type="submit">done</button>
+				</form>
+			</div>
+			<div class="aside">
+				<p></p>
+			</div>
+		</div>
+	</body>
+</html>

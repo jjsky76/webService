@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title><%= title %></title>
+    <link rel='stylesheet' href='/stylesheets/bootstrap.css' />
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+	<script src="/javascripts/bootstrap.js"></script>
+    
+	<script>
+		function modifySubmitContents() {           
+            var title = $('#modContentSubject').val();
+            var content = $('#modContents').val();
+            var inputPassword = $('#modContentPassword').val();
+
+            var chkpw = true; //checkPW(inputPassword);
+
+            if(chkpw == true) {
+                if (title == '' || content == '') {
+                    alert("Please Fill in Title and Description !!!");
+                    return;
+                } else {
+                    $('#modifyAction').submit();
+                }
+            } else {
+                alert("Please enter correct password !!!");
+                return;
+            }
+        }
+		
+		function cancelForm(option) {
+            if(option == 'modify') {
+                // 수정하다 취소시
+                $('.content_detail').show();
+                $('.modify_form').hide();
+            } else {
+                $('.delete_confirm').hide();
+            }
+
+        }
+    </script>
+</head>
+<body>
+	<div class="col-xs-2">
+	</div>
+	
+	<div class="container col-xs-8">
+		<div class="text-center">
+		<br>
+		<h2>Modify Post</h2>
+		</div>
+			
+		<div id="contentForm" class="form-horizontal">
+			<form id="modifyAction" action="/board/regist?mode=modify" method="post">
+				<div class="form-group">
+					<label for="modContentSubject"> 1. Title : </label>
+					<input type="text" class="form-control" id="modContentSubject" name="modContentSubject" value="<%=content.title%>">
+				</div>
+				<div class="form-group">
+					<label for="modContentWriter"> 2. Author : </label>
+					<input type="text" class="form-control" id="modContentWriter" name="modContentWriter" value="<%=content.writer%>" disabled>
+				</div>
+				<div class="form-group">
+					<label for="modContentPassword"> 3. Password : </label>
+					<input type="password" class="form-control" id="modContentPassword" name="modContentPassword" placeholder="Password">
+				</div>
+				<div class="form-group">
+					<label for="modContents"> 4. Description : </label>
+					<textarea class="form-control" id="modContents" name="modContents" rows="10" cols="80"><%-content.contents%></textarea>
+				</div>				
+				<input type="hidden" id="modId" name="modId" value="<%=content._id%>">
+			</form>
+			<div id ="buttonGroup" class="addBtngroup text-right">
+				<button class="btn btn-default"  onclick="modifySubmitContents();"> Write </button>
+				<button class="btn btn-default"  onclick="history.back();"> Cancel </button>
+				<br>
+				<br>
+			</div>
+		</div>
+	</div>
+	
+	<div class="col-xs-2">
+	</div>
+</body>
+</html>

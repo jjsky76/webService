@@ -1,0 +1,25 @@
+@media screen and (min-width:600px) {
+    #nav_side {
+        float: left;
+    }
+    #nav_content {
+        float: left;
+    }
+    #aside {
+        float: left;
+    }
+}
+
+@media screen and (max-width:600px) {
+    #nav_side {
+        float: left;
+        display: none;
+    }
+    #nav_content {
+        float: left;
+    }
+    #aside {
+        float: left;
+        display: none;
+    }
+}

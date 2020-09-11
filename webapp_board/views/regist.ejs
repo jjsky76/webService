@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title><%= title %></title>
+    <link rel='stylesheet' href='/stylesheets/bootstrap.css' />
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+	<script src="/javascripts/bootstrap.js"></script>
+    
+	<script>
+        function submitContents() {
+            var title = $('#addContentSubject').val();
+            var content = $('#addContents').val();
+            var writer = $('#addContentWriter').val();
+            var password = $('#addContentPassword').val();
+
+            if(title == '' || content == '' || writer == '' || password == '') {
+                alert("Please Fill in Title, Writer, Password, Description !!!");
+                return;
+            } else {
+                $('#writeAction').submit();
+            }
+        }     
+    </script>
+</head>
+<body>
+	<div class="col-sm-2">
+	</div>
+	
+	<div class="container col-sm-8">
+		<div class="text-center">
+		<br>
+		<h2>New Post</h2>
+		</div>
+		
+		<div id="contentForm" class="form-horizontal">
+			<form id="writeAction" action="/board/regist" method="post" enctype="multipart/form-data">
+				<div class="form-group">
+					<label for="addContentSubject"> 1. Title : </label>
+					<input type="text" class="form-control" id="addContentSubject" name="addContentSubject" placeholder="Title">
+				</div>
+				<div class="form-group">
+					<label for="addContentWriter"> 2. Author : </label>
+					<input type="text" class="form-control" id="addContentWriter" name="addContentWriter" placeholder="Writer">
+				</div>
+				<div class="form-group">
+					<label for="addContentPassword"> 3. Password : </label>
+					<input type="password" class="form-control" id="addContentPassword" name="addContentPassword" placeholder="Password">
+				</div>
+				<div class="form-group">
+					<label for="addContents"> 4. Description : </label>
+					<textarea class="form-control" id="addContents" name="addContents" rows="10" cols="80" placeholder="Description"></textarea>
+				</div>
+				<!--
+				<div class="form-group">
+					<label for="UploadFile"> 5. File : </label>
+					<input type="file" class="inputFile" id ="UploadFile" name ="UploadFile" multiple>
+				</div>
+				-->
+			</form>
+			<div id ="buttonGroup" class="addBtngroup text-right">
+				<button class="btn btn-default"  onclick="submitContents();"> Submit </button>
+				<button class="btn btn-default"  onclick="history.back();"> Cancel </button>
+				<br>
+				<br>
+			</div>
+		</div>
+	</div>
+	
+	<div class="col-sm-2">
+	</div>
+</body>
+</html>
