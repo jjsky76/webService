@@ -1,0 +1,7 @@
+FROM node:latest
+RUN apt-get -y -qq update
+RUN apt-get -y -qq install vim
+RUN mkdir -p /usr/src/app/webapp_board/
+WORKDIR /usr/src/app/webapp_board/
+COPY pack*.json ./
+RUN npm install --save

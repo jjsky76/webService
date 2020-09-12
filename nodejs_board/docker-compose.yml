@@ -1,0 +1,26 @@
+version: '3'
+
+services:
+    mongo:
+        image: mongo
+        container_name: mongo
+        environment:
+            - MONGO_INITDB_DATABASE=board
+        ports:
+            - 27017:27017
+
+    webboard:
+        build: 
+            context: .
+            dockerfile: Dockerfile-dev
+        image: webboard
+        container_name: webboard
+        ports:
+            - 3000:3000
+        command:
+            - /usr/src/app/webapp_board/bin/www
+        volumes:
+            - ./webapp_board/:/usr/src/app/webapp_board/
+            - /usr/src/app/webapp_board/node_modules
+        depends_on:
+            - mongo
