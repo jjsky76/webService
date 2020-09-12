@@ -18,9 +18,9 @@ services:
         ports:
             - 3000:3000
         command:
-            - /usr/src/app/webapp_board/bin/www
+            - /usr/src/app/bin/www
         volumes:
-            - ./webapp_board/:/usr/src/app/webapp_board/
-            - /usr/src/app/webapp_board/node_modules
+            - ./webapp_board/:/usr/src/app/
+            - /usr/src/app/node_modules
         depends_on:
             - mongo
