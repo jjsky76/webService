@@ -7,7 +7,7 @@ This git repository will contains below apps and be maintained for education.
   -. Dockerfile-dev     : board service image build  
   -. docker-compose.yml : mongo db service and board app service  
   -. webapp_board       : board app source code   
-  <b>*. how to run</b>  
+  <b>[ how to run ]</b>  
   $ cd nodejs_board  
   $ docker-compose up -d  
   enter url(http://localhost:3000/board) on web browser  
