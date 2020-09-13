@@ -4,14 +4,8 @@ web services for education
 This git repository will contains below apps and be maintained for education.
 
 1. nodejs bulletin board web service application  
-  -. Dockerfile-dev     : board service image build  
-  -. docker-compose.yml : mongo db service and board app service  
-  -. webapp_board       : board app source code   
-  <b>[ how to run ]</b>  
-  $ cd nodejs_board  
-  $ docker-compose up -d  
-  enter url(http://localhost:3000/board) on web browser  
-    
-    
+   please refer below github wiki link.  
+   https://github.com/jjsky76/webService/wiki/1.-WebService-Bulletin-Board-with-node.js-&-mongoDB  
+       
 2. django bulletin board web service application  
 ....
